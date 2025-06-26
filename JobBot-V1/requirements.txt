@@ -1,0 +1,59 @@
+# JobBot - AI-Powered Job Hunting Assistant
+# Optimized for Windows 11 and Production Use
+
+# Core Dependencies - Web Scraping & HTTP
+requests>=2.31.0                 # HTTP library for API calls
+aiohttp>=3.9.0                   # Async HTTP client for concurrent scraping
+beautifulsoup4>=4.12.0           # HTML parsing for web scraping
+lxml>=4.9.0                      # Fast XML/HTML parser
+urllib3>=2.0.0                   # HTTP client with connection pooling
+python-dotenv>=1.0.0             # Environment variable management
+
+# Configuration & Data Management
+PyYAML>=6.0                      # YAML configuration file support
+pydantic>=2.0.0                  # Data validation and serialization
+
+# AI/LLM Dependencies - OpenAI Integration
+openai>=1.0.0                    # OpenAI GPT API for job analysis
+langchain>=0.1.0                 # LangChain framework for AI workflows
+langchain-openai>=0.0.5          # OpenAI integration for LangChain
+crewai>=0.1.0                    # Multi-agent AI workflows
+
+# GUI & Interface - Windows 11 Optimized
+pillow>=10.0.0                   # Image processing for splash screen
+# tkinter - Included with Python (Windows 11 compatible)
+
+# Data Processing & Analytics
+pandas>=2.0.0                    # Data manipulation and analysis
+numpy>=1.24.0                    # Numerical computing foundation
+
+# Date & Time Utilities
+python-dateutil>=2.8.0           # Enhanced date parsing
+pytz>=2023.3                     # Timezone handling
+
+# Web Server & API Framework
+fastapi>=0.104.0                  # Modern web framework for APIs
+uvicorn>=0.24.0                   # ASGI server for FastAPI
+
+# Windows 11 Specific Optimizations
+certifi>=2023.7.22               # SSL certificate verification
+charset-normalizer>=3.3.0        # Character encoding detection for Windows
+
+# Optional: Advanced Web Scraping (uncomment if needed)
+# selenium>=4.15.0               # Browser automation for dynamic content
+# webdriver-manager>=4.0.0       # Automatic WebDriver management
+
+# Development Dependencies (install separately with -r requirements-dev.txt)
+# pytest>=7.4.0                 # Testing framework
+# black>=23.9.0                 # Code formatting
+# flake8>=6.1.0                 # Code linting
+# mypy>=1.6.0                   # Type checking
+# coverage>=7.3.0               # Code coverage analysis
+
+# Installation Notes for Windows 11:
+# 1. Ensure Python 3.8+ is installed from python.org
+# 2. Run: pip install -r requirements.txt
+# 3. For best performance, consider using a virtual environment:
+#    python -m venv jobbot_env
+#    jobbot_env\Scripts\activate
+#    pip install -r requirements.txt

@@ -1,0 +1,2239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Hunt Dashboard - 2025-06-26 15:38:27</title>
+    <style>
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 { 
+            font-size: 2.5em; 
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .timestamp {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover { transform: translateY(-2px); }
+        .stat-card.priority-high { background: linear-gradient(135deg, #10b981, #059669); }
+        .stat-card.premium { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .stat-card.starred { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        
+        .stat-number { font-size: 2.2em; font-weight: bold; }
+        .stat-label { font-size: 0.9em; opacity: 0.9; }
+        
+        .controls {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .filter-section h3 { margin-bottom: 15px; color: #333; }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            background: #e2e8f0;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .filter-btn:hover { background: #cbd5e0; transform: translateY(-1px); }
+        .filter-btn.active { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .filter-btn.starred-filter { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; }
+        .filter-btn.starred-filter:hover { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+        
+        .filter-dropdowns {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .filter-dropdowns select, .filter-dropdowns input {
+            padding: 10px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            font-size: 0.9em;
+            transition: border-color 0.3s;
+        }
+        
+        .filter-dropdowns select:focus, .filter-dropdowns input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        #searchBox { min-width: 250px; }
+        
+        .clear-filters-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            background: white;
+            color: #667eea;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .clear-filters-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .starred-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .export-btn, .stats-btn {
+            padding: 8px 16px;
+            border: 2px solid #8b5cf6;
+            border-radius: 8px;
+            background: white;
+            color: #8b5cf6;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+        
+        .export-btn:hover, .stats-btn:hover {
+            background: #8b5cf6;
+            color: white;
+        }
+        
+        .results-info {
+            color: #666;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 25px;
+        }
+        
+        .job-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .job-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        
+        .job-card.priority-high::before {
+            background: linear-gradient(135deg, #10b981, #059669);
+            height: 6px;
+        }
+        
+        .job-card.premium::before {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            height: 8px;
+        }
+        
+        .job-card.starred::before {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            height: 6px;
+        }
+        
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+        
+        .job-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #1f2937;
+            line-height: 1.3;
+            flex: 1;
+        }
+        
+        .job-badges {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .score-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.85em;
+            white-space: nowrap;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .score-excellent { background: #10b981; color: white; }
+        .score-premium { background: #f59e0b; color: white; }
+        .score-good { background: #3b82f6; color: white; }
+        .score-fair { background: #6b7280; color: white; }
+        .score-poor { background: #ef4444; color: white; }
+        
+        .star-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            background: #8b5cf6;
+            color: white;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+        
+        .job-meta {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+        
+        .meta-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .meta-label {
+            font-weight: 500;
+            color: #6b7280;
+            min-width: 80px;
+        }
+        
+        .meta-value {
+            color: #1f2937;
+            flex: 1;
+        }
+        
+        .badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+        
+        .badge-remote { background: #dcfce7; color: #166534; }
+        .badge-source { background: #e0e7ff; color: #3730a3; }
+        .badge-premium { background: #fef3c7; color: #92400e; }
+        
+        .job-description {
+            margin: 15px 0;
+            color: #4b5563;
+            line-height: 1.5;
+            font-size: 0.9em;
+        }
+        
+        .job-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .interested-btn {
+            background: #10b981;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .interested-btn:hover {
+            background: #059669;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+        
+        .star-btn {
+            background: #8b5cf6;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .star-btn:hover {
+            background: #7c3aed;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+        }
+        
+        .starred-btn {
+            background: #fbbf24;
+            color: #92400e;
+            font-weight: 600;
+        }
+        
+        .starred-btn:hover {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.1em;
+            color: white;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+            font-size: 1.2em;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            margin: 20px 0;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 3% auto;
+            padding: 0;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+        
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-header {
+            padding: 25px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .modal-header h2 { margin: 0; font-size: 1.5em; }
+        .modal-subtitle { font-size: 0.95em; opacity: 0.9; margin-top: 5px; }
+        
+        .close {
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            opacity: 0.8;
+            line-height: 1;
+        }
+        
+        .close:hover { opacity: 1; }
+        
+        .modal-body {
+            padding: 30px;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+        
+        .modal-footer {
+            padding: 20px 30px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+        
+        .bullet-item {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 12px 0;
+            border-left: 4px solid #10b981;
+            transition: all 0.3s ease;
+        }
+        
+        .bullet-item:hover {
+            background: #f1f5f9;
+            transform: translateX(5px);
+        }
+        
+        .bullet-item:before {
+            content: "▶ ";
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        .notes-section {
+            margin: 20px 0;
+        }
+        
+        .notes-section label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .notes-section textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        
+        .notes-section textarea:focus {
+            outline: none;
+            border-color: #8b5cf6;
+        }
+        
+        .copy-btn { background: #10b981; color: white; }
+        .copy-btn:hover { background: #059669; }
+        
+        .apply-btn { background: #3b82f6; color: white; }
+        .apply-btn:hover { background: #2563eb; }
+        
+        .close-btn { background: #6b7280; color: white; }
+        .close-btn:hover { background: #4b5563; }
+        
+        .stats-grid-modal {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stats-card-modal {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .stats-number-modal {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #8b5cf6;
+        }
+        
+        .stats-label-modal {
+            font-size: 0.9em;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .jobs-grid { grid-template-columns: 1fr; }
+            .filter-buttons { justify-content: center; }
+            .filter-dropdowns { justify-content: center; }
+            .job-header { flex-direction: column; text-align: center; }
+            .job-actions { flex-direction: column; }
+            .modal-content { margin: 5% auto; width: 95%; }
+            .modal-footer { flex-direction: column; }
+        }
+
+        /* Pagination Styles */
+        .pagination-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .pagination-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .pagination-settings {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .pagination-settings label {
+            font-size: 0.9em;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .pagination-settings select {
+            padding: 6px 10px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            background: white;
+            font-size: 0.9em;
+        }
+        
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .pagination-btn {
+            padding: 8px 16px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            background: white;
+            color: #667eea;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+        
+        .pagination-btn:hover:not(:disabled) {
+            background: #667eea;
+            color: white;
+            transform: translateY(-1px);
+        }
+        
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .page-numbers {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        
+        .page-number {
+            padding: 8px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            background: white;
+            color: #4a5568;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .page-number:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+        
+        .page-number.current {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .page-ellipsis {
+            padding: 8px 4px;
+            color: #9ca3af;
+            font-weight: bold;
+        }
+        
+        .loading-pagination {
+            text-align: center;
+            padding: 20px;
+            color: #6b7280;
+            font-style: italic;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎯 Job Hunt Dashboard</h1>
+            <div class="timestamp">Generated: 2025-06-26 15:38:27</div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">21</div>
+                    <div class="stat-label">Total Jobs</div>
+                </div>
+                <div class="stat-card priority-high">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">High Priority</div>
+                </div>
+                <div class="stat-card premium">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Premium Jobs (86+)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">65</div>
+                    <div class="stat-label">Avg Score</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Remote Jobs</div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="controls">
+            <div class="filter-section">
+                <h3>Filters & Search</h3>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" onclick="filterByPriority('all')">All Jobs</button>
+                    <button class="filter-btn" onclick="filterByPriority('HIGH')">High Priority (0)</button>
+                    <button class="filter-btn" onclick="filterByPriority('PREMIUM')">Premium 86+ (0)</button>
+                    <button class="filter-btn starred-filter" onclick="filterByPriority('STARRED')">⭐ Starred (1)</button>
+                </div>
+                
+                <div class="filter-dropdowns">
+                    <select id="sourceFilter" onchange="filterBySource(this.value)">
+                        <option value="all">All Sources</option>
+                        <option value="LinkedIn">LinkedIn</option>
+                    </select>
+                    
+                    <select id="remoteFilter" onchange="filterByRemote(this.value)">
+                        <option value="all">All Locations</option>
+                        <option value="true">Remote Only</option>
+                        <option value="false">On-site Only</option>
+                    </select>
+                    
+                    <input type="text" id="searchBox" placeholder="Search jobs..." onkeyup="searchJobs()">
+                    <button class="clear-filters-btn" onclick="clearAllFilters()">Clear Filters</button>
+                </div>
+                
+                <div class="starred-actions">
+                    <button class="export-btn" onclick="exportStarredJobs('csv')">📊 Export Starred (CSV)</button>
+                    <button class="export-btn" onclick="exportStarredJobs('json')">📋 Export Starred (JSON)</button>
+                    <button class="stats-btn" onclick="showStarredStats()">📈 Starred Stats</button>
+                </div>
+            </div>
+            
+            <!-- NEW: Pagination Controls -->
+            <div class="pagination-section">
+                <div class="pagination-info">
+                    <span id="resultsCount">Loading jobs...</span>
+                    <div class="pagination-settings">
+                        <label for="pageSize">Jobs per page:</label>
+                        <select id="pageSize" onchange="updatePageSize(this.value)">
+                            <option value="10">10</option>
+                            <option value="20" selected>20</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="pagination-controls" id="paginationControls" style="display: none;">
+                    <button class="pagination-btn" id="firstPageBtn" onclick="goToPage(1)" disabled>
+                        ⏪ First
+                    </button>
+                    <button class="pagination-btn" id="prevPageBtn" onclick="goToPreviousPage()" disabled>
+                        ⬅️ Previous
+                    </button>
+                    
+                    <div class="page-numbers" id="pageNumbers">
+                        <!-- Page numbers will be inserted here -->
+                    </div>
+                    
+                    <button class="pagination-btn" id="nextPageBtn" onclick="goToNextPage()" disabled>
+                        Next ➡️
+                    </button>
+                    <button class="pagination-btn" id="lastPageBtn" onclick="goToPage('last')" disabled>
+                        Last ⏩
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="jobs-container" class="jobs-grid">
+            <!-- Jobs will be loaded here by JavaScript -->
+        </div>
+        
+        <div id="loading" class="loading">Loading jobs...</div>
+    </div>
+    
+    <!-- Bullet Modal -->
+    <div id="bulletModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Tailored Resume Bullets</h2>
+                <div class="modal-subtitle" id="modalSubtitle"></div>
+                <span class="close" onclick="closeBulletModal()">&times;</span>
+            </div>
+            <div id="modalBody" class="modal-body">
+                <!-- Bullets will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button onclick="copyBulletsToClipboard()" class="copy-btn">📋 Copy to Clipboard</button>
+                <button onclick="openJobURL()" class="apply-btn" id="applyBtn" style="display:none">🚀 Apply Now</button>
+                <button onclick="closeBulletModal()" class="close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- Star Notes Modal -->
+    <div id="starModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⭐ Star Job</h2>
+                <div class="modal-subtitle" id="starModalSubtitle"></div>
+                <span class="close" onclick="closeStarModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="notes-section">
+                    <label for="starNotes">Notes (optional):</label>
+                    <textarea id="starNotes" placeholder="Why are you interested in this job? Any notes to remember..." rows="4"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="confirmStarJob()" class="star-btn">⭐ Star Job</button>
+                <button onclick="closeStarModal()" class="close-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Starred Stats Modal -->
+    <div id="statsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📈 Starred Jobs Statistics</h2>
+                <span class="close" onclick="closeStatsModal()">&times;</span>
+            </div>
+            <div id="statsModalBody" class="modal-body">
+                <!-- Stats will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeStatsModal()" class="close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        
+        let allJobs = [];
+        let filteredJobs = [];
+        let currentFilters = {
+            priority: 'all',
+            source: 'all',
+            remote: 'all',
+            search: ''
+        };
+        let currentJobForBullets = null;
+        let currentJobForStar = null;
+        
+        // Load jobs data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadJobsData();
+        });
+        
+        function loadJobsData() {
+            try {
+                console.log('Loading embedded jobs data...');
+                
+                // Embedded jobs data to avoid CORS issues with file:// protocol
+                const data = [
+  {
+    "id": 0,
+    "title": "Software Engineer",
+    "company": "SpiderOak Mission Systems",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 69,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/software-engineer-at-spideroak-mission-systems-4250266655?position=1&pageNum=0&refId=DAD4PSZfumWbA1SGr%2FnWyw%3D%3D&trackingId=V4YOy7ioztVgW5BWGq2u4w%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:09.772007",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Software Engineer",
+    "analyzed_at": "2025-06-26T15:38:27.720895",
+    "has_bullets": false,
+    "bullets": []
+  },
+  {
+    "id": 1,
+    "title": "Software Engineer (SWE)",
+    "company": "CareYaya Health Technologies",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 69,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/software-engineer-swe-at-careyaya-health-technologies-4250488952?position=3&pageNum=0&refId=DAD4PSZfumWbA1SGr%2FnWyw%3D%3D&trackingId=1rOG0IKxiWQHHn43Li8lag%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:09.772595",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Software Engineer",
+    "analyzed_at": "2025-06-26T15:38:27.720903",
+    "has_bullets": false,
+    "bullets": []
+  },
+  {
+    "id": 2,
+    "title": "Software Engineer (Fullstack)",
+    "company": "Productable",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 65,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/software-engineer-fullstack-at-productable-4249880895?position=4&pageNum=0&refId=DAD4PSZfumWbA1SGr%2FnWyw%3D%3D&trackingId=W07EaMMV31ZV8Qkto02dVg%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:09.772848",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Software Engineer",
+    "analyzed_at": "2025-06-26T15:38:27.720908",
+    "has_bullets": false,
+    "bullets": []
+  },
+  {
+    "id": 3,
+    "title": "Software Engineer, Full Stack",
+    "company": "Pryon",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 65,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/software-engineer-full-stack-at-pryon-4226363205?position=6&pageNum=0&refId=DAD4PSZfumWbA1SGr%2FnWyw%3D%3D&trackingId=rfu2oAP%2BedmnMdv4gf20VQ%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:09.773348",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Software Engineer",
+    "analyzed_at": "2025-06-26T15:38:27.720911",
+    "has_bullets": false,
+    "bullets": []
+  },
+  {
+    "id": 4,
+    "title": "Full-Stack Software Engineer",
+    "company": "TerraFirma, Inc",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 65,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/full-stack-software-engineer-at-terrafirma-inc-4255657813?position=8&pageNum=0&refId=DAD4PSZfumWbA1SGr%2FnWyw%3D%3D&trackingId=xHFeMilJSinWPJz4beNrOw%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:09.773873",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Software Engineer",
+    "analyzed_at": "2025-06-26T15:38:27.720914",
+    "has_bullets": false,
+    "bullets": []
+  },
+  {
+    "id": 5,
+    "title": "Software Engineer",
+    "company": "uShip",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 65,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/software-engineer-at-uship-4241042518?position=9&pageNum=0&refId=DAD4PSZfumWbA1SGr%2FnWyw%3D%3D&trackingId=9fUuVmnT53jTr4zOWSLE4A%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:09.774119",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Software Engineer",
+    "analyzed_at": "2025-06-26T15:38:27.720917",
+    "has_bullets": false,
+    "bullets": []
+  },
+  {
+    "id": 6,
+    "title": "Software Engineer",
+    "company": "Provi",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 65,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/software-engineer-at-provi-4225790072?position=10&pageNum=0&refId=DAD4PSZfumWbA1SGr%2FnWyw%3D%3D&trackingId=SFD44zA25EmvAYusEkWfkA%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:09.774360",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Software Engineer",
+    "analyzed_at": "2025-06-26T15:38:27.720919",
+    "has_bullets": false,
+    "bullets": []
+  },
+  {
+    "id": 7,
+    "title": "Data Scientist",
+    "company": "PayPal",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 65,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/data-scientist-at-paypal-4253972310?position=1&pageNum=0&refId=nGp2JCA%2BTS5ILc9EUCQewQ%3D%3D&trackingId=qUSLjQJj9tUthoDGHdUAbA%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:13.725212",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Data Scientist",
+    "analyzed_at": "2025-06-26T15:38:27.720922",
+    "has_bullets": false,
+    "bullets": []
+  },
+  {
+    "id": 8,
+    "title": "Data Scientist, Product Analytics",
+    "company": "Meta",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 65,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/data-scientist-product-analytics-at-meta-4120823583?position=3&pageNum=0&refId=nGp2JCA%2BTS5ILc9EUCQewQ%3D%3D&trackingId=na21oBrEVsrVOUmilvDRxg%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:13.725775",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Data Scientist",
+    "analyzed_at": "2025-06-26T15:38:27.720925",
+    "has_bullets": false,
+    "bullets": []
+  },
+  {
+    "id": 9,
+    "title": "Data Scientist",
+    "company": "General Motors",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 65,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/data-scientist-at-general-motors-4134914083?position=4&pageNum=0&refId=nGp2JCA%2BTS5ILc9EUCQewQ%3D%3D&trackingId=3yzUXmBx%2BCO3M1ykhKN9pA%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:13.726071",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Data Scientist",
+    "analyzed_at": "2025-06-26T15:38:27.720928",
+    "has_bullets": false,
+    "bullets": []
+  },
+  {
+    "id": 10,
+    "title": "Data Scientist 1",
+    "company": "PayPal",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 65,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/data-scientist-1-at-paypal-4253971420?position=6&pageNum=0&refId=nGp2JCA%2BTS5ILc9EUCQewQ%3D%3D&trackingId=s3LHYs38OcvTssqYdGX%2BGg%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:13.726573",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Data Scientist",
+    "analyzed_at": "2025-06-26T15:38:27.720930",
+    "has_bullets": false,
+    "bullets": []
+  },
+  {
+    "id": 11,
+    "title": "Data Scientist",
+    "company": "VICTORY",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 65,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/data-scientist-at-victory-4119514397?position=7&pageNum=0&refId=nGp2JCA%2BTS5ILc9EUCQewQ%3D%3D&trackingId=AD9oFcwID%2BKZAF38Lh75Ng%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:13.726818",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Data Scientist",
+    "analyzed_at": "2025-06-26T15:38:27.720933",
+    "has_bullets": false,
+    "bullets": []
+  },
+  {
+    "id": 12,
+    "title": "Product Manager",
+    "company": "YETI",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 65,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/product-manager-at-yeti-4257725211?position=1&pageNum=0&refId=dyCTszzxsiOnPyxDVgG5JQ%3D%3D&trackingId=SvWQL9KtdgO1W1hGECFzXA%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:17.872838",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Product Manager",
+    "analyzed_at": "2025-06-26T15:38:27.720936",
+    "has_bullets": false,
+    "bullets": []
+  },
+  {
+    "id": 13,
+    "title": "Product Manager",
+    "company": "Meta",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 65,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/product-manager-at-meta-4199409425?position=2&pageNum=0&refId=dyCTszzxsiOnPyxDVgG5JQ%3D%3D&trackingId=d2kBf7buXJUPO12JJQhjog%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:17.873118",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Product Manager",
+    "analyzed_at": "2025-06-26T15:38:27.720938",
+    "has_bullets": false,
+    "bullets": []
+  },
+  {
+    "id": 14,
+    "title": "Product Manager",
+    "company": "2K",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 65,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/product-manager-at-2k-4225796872?position=3&pageNum=0&refId=dyCTszzxsiOnPyxDVgG5JQ%3D%3D&trackingId=WHruxejnlvqNNqymCVZ1ug%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:17.873426",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Product Manager",
+    "analyzed_at": "2025-06-26T15:38:27.720941",
+    "has_bullets": false,
+    "bullets": []
+  },
+  {
+    "id": 15,
+    "title": "Product Manager",
+    "company": "Visa",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 65,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/product-manager-at-visa-4244067419?position=4&pageNum=0&refId=dyCTszzxsiOnPyxDVgG5JQ%3D%3D&trackingId=w%2FPN52xUW9k6nAiVpG1gLw%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:17.873680",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Product Manager",
+    "analyzed_at": "2025-06-26T15:38:27.720943",
+    "has_bullets": false,
+    "bullets": []
+  },
+  {
+    "id": 16,
+    "title": "Product Manager, Amazon Payments",
+    "company": "Amazon",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 65,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/product-manager-amazon-payments-at-amazon-4205810654?position=5&pageNum=0&refId=dyCTszzxsiOnPyxDVgG5JQ%3D%3D&trackingId=cUNYI%2B2z8KfsAfp9p1NyXw%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:17.873932",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Product Manager",
+    "analyzed_at": "2025-06-26T15:38:27.720946",
+    "has_bullets": false,
+    "bullets": []
+  },
+  {
+    "id": 17,
+    "title": "Product Manager, Manage",
+    "company": "BetterUp",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 65,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/product-manager-manage-at-betterup-4136916808?position=6&pageNum=0&refId=dyCTszzxsiOnPyxDVgG5JQ%3D%3D&trackingId=h9pQlVBSp1MMstpZMG7C3A%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:17.874187",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Product Manager",
+    "analyzed_at": "2025-06-26T15:38:27.720948",
+    "has_bullets": false,
+    "bullets": []
+  },
+  {
+    "id": 18,
+    "title": "Sr. Product Manager",
+    "company": "Inventive",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 65,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/sr-product-manager-at-inventive-4255368366?position=7&pageNum=0&refId=dyCTszzxsiOnPyxDVgG5JQ%3D%3D&trackingId=MGRICDZGByuuj%2FJ2fnQwLQ%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:17.874442",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Product Manager",
+    "analyzed_at": "2025-06-26T15:38:27.720951",
+    "has_bullets": false,
+    "bullets": []
+  },
+  {
+    "id": 19,
+    "title": "Senior Product Manager",
+    "company": "GovOS",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 65,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/senior-product-manager-at-govos-4241396022?position=9&pageNum=0&refId=dyCTszzxsiOnPyxDVgG5JQ%3D%3D&trackingId=dgLsrwzT4sj%2BOeXW2sReMA%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:17.874930",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Product Manager",
+    "analyzed_at": "2025-06-26T15:38:27.720954",
+    "has_bullets": false,
+    "bullets": []
+  },
+  {
+    "id": 20,
+    "title": "Sr. Product Manager, Lending",
+    "company": "Varo Bank",
+    "location": "Austin, TX",
+    "salary": "Not specified",
+    "salary_range": "Not specified",
+    "salary_min": null,
+    "salary_max": null,
+    "source": "LinkedIn",
+    "score": 65,
+    "priority": "NORMAL",
+    "url": "https://www.linkedin.com/jobs/view/sr-product-manager-lending-at-varo-bank-4251672808?position=10&pageNum=0&refId=dyCTszzxsiOnPyxDVgG5JQ%3D%3D&trackingId=JKLm6CCnMHH1le4Cx%2BjWew%3D%3D",
+    "description": "[No description provided by job board]",
+    "full_description": "[No description provided by job board]",
+    "remote_friendly": false,
+    "clearance_required": "",
+    "job_type": "Full-time",
+    "posted_date": "",
+    "scraped_at": "2025-06-26T15:38:17.875185",
+    "days_since_posted": 0,
+    "rationale": "Quick assessment - full analysis available on request [⚠️ Some job details were missing]",
+    "search_keywords": "Product Manager",
+    "analyzed_at": "2025-06-26T15:38:27.720956",
+    "has_bullets": false,
+    "bullets": []
+  }
+];
+                
+                console.log('Jobs data loaded:', data.length, 'jobs');
+                
+                allJobs = data;
+                filteredJobs = [...allJobs];
+                renderJobs();
+                document.getElementById('loading').style.display = 'none';
+                updateResultsCount();
+            } catch (error) {
+                console.error('Error loading jobs data:', error);
+                document.getElementById('loading').innerHTML = '❌ Error loading jobs data. Make sure you generated the dashboard first.';
+            }
+        }
+        
+        function renderJobs() {
+            const container = document.getElementById('jobs-container');
+            container.innerHTML = '';
+            
+            if (filteredJobs.length === 0) {
+                container.innerHTML = '<div class="no-results">🔍 No jobs match your current filters</div>';
+                return;
+            }
+            
+            filteredJobs.forEach(job => {
+                const jobCard = createJobCard(job);
+                container.appendChild(jobCard);
+            });
+        }
+        
+        function createJobCard(job) {
+            const card = document.createElement('div');
+            
+            let cardClasses = `job-card priority-${job.priority.toLowerCase()}`;
+            if (job.score >= 86) {
+                cardClasses += ' premium';
+            }
+            if (job.starred) {
+                cardClasses += ' starred';
+            }
+            card.className = cardClasses;
+            
+            const scoreClass = getScoreClass(job.score);
+            
+            // Star button text and action
+            const starButtonText = job.starred ? '⭐ Starred' : '☆ Star Job';
+            const starButtonClass = job.starred ? 'btn starred-btn' : 'btn star-btn';
+            const starButtonAction = job.starred ? `unstarJob(${job.id})` : `showStarModal(${job.id})`;
+            
+            card.innerHTML = `
+                <div class="job-header">
+                    <h3 class="job-title">${escapeHtml(job.title)}</h3>
+                    <div class="job-badges">
+                        <span class="score-badge ${scoreClass}">${job.score}/100</span>
+                        ${job.starred ? '<span class="star-badge">⭐ Starred</span>' : ''}
+                    </div>
+                </div>
+                
+                <div class="job-meta">
+                    <div class="meta-row">
+                        <span class="meta-label">Company:</span>
+                        <span class="meta-value">${escapeHtml(job.company)}</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label">Location:</span>
+                        <span class="meta-value">
+                            ${escapeHtml(job.location)}
+                            ${job.remote_friendly ? '<span class="badge badge-remote">Remote</span>' : ''}
+                            ${job.score >= 86 ? '<span class="badge badge-premium">Premium</span>' : ''}
+                        </span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label">Salary:</span>
+                        <span class="meta-value">${escapeHtml(job.salary_range)}</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label">Source:</span>
+                        <span class="meta-value">
+                            <span class="badge badge-source">${escapeHtml(job.source)}</span>
+                        </span>
+                    </div>
+                    ${job.starred && job.starred_notes ? `
+                    <div class="meta-row">
+                        <span class="meta-label">Notes:</span>
+                        <span class="meta-value">${escapeHtml(job.starred_notes)}</span>
+                    </div>
+                    ` : ''}
+                </div>
+                
+                <div class="job-description">
+                    ${escapeHtml(job.description)}
+                </div>
+                
+                <div class="job-actions">
+                    ${job.url ? `<a href="${escapeHtml(job.url)}" target="_blank" class="btn btn-primary">🚀 Apply Now</a>` : ''}
+                    <button onclick="showInterest(${job.id})" class="btn interested-btn">
+                        📝 Get Resume Bullets
+                    </button>
+                    <button onclick="${starButtonAction}" class="${starButtonClass}">
+                        ${starButtonText}
+                    </button>
+                </div>
+            `;
+            
+            return card;
+        }
+        
+        function getScoreClass(score) {
+            if (score >= 86) return 'score-premium';
+            if (score >= 80) return 'score-excellent';
+            if (score >= 70) return 'score-good';
+            if (score >= 50) return 'score-fair';
+            return 'score-poor';
+        }
+        
+        function filterByPriority(priority) {
+            currentFilters.priority = priority;
+            applyFilters();
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+        
+        function filterBySource(source) {
+            currentFilters.source = source;
+            applyFilters();
+        }
+        
+        function filterByRemote(remote) {
+            currentFilters.remote = remote;
+            applyFilters();
+        }
+        
+        function searchJobs() {
+            currentFilters.search = document.getElementById('searchBox').value.toLowerCase();
+            applyFilters();
+        }
+        
+        function clearAllFilters() {
+            currentFilters = {
+                priority: 'all',
+                source: 'all',
+                remote: 'all',
+                search: ''
+            };
+            
+            document.getElementById('sourceFilter').value = 'all';
+            document.getElementById('remoteFilter').value = 'all';
+            document.getElementById('searchBox').value = '';
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.filter-btn').classList.add('active');
+            
+            applyFilters();
+        }
+        
+        function applyFilters() {
+            filteredJobs = allJobs.filter(job => {
+                // Priority filter
+                if (currentFilters.priority !== 'all') {
+                    if (currentFilters.priority === 'PREMIUM') {
+                        if (job.score < 86) return false;
+                    } else if (currentFilters.priority === 'STARRED') {
+                        if (!job.starred) return false;
+                    } else if (job.priority !== currentFilters.priority) {
+                        return false;
+                    }
+                }
+                
+                // Source filter
+                if (currentFilters.source !== 'all' && job.source !== currentFilters.source) {
+                    return false;
+                }
+                
+                // Remote filter
+                if (currentFilters.remote !== 'all') {
+                    const isRemote = job.remote_friendly;
+                    if (currentFilters.remote === 'true' && !isRemote) return false;
+                    if (currentFilters.remote === 'false' && isRemote) return false;
+                }
+                
+                // Search filter
+                if (currentFilters.search) {
+                    const searchText = `${job.title} ${job.company} ${job.location} ${job.description} ${job.starred_notes || ''}`.toLowerCase();
+                    if (!searchText.includes(currentFilters.search)) return false;
+                }
+                
+                return true;
+            });
+            
+            renderJobs();
+            updateResultsCount();
+        }
+        
+        function updateResultsCount() {
+            const count = filteredJobs.length;
+            const total = allJobs.length;
+            document.getElementById('resultsCount').textContent = 
+                count === total ? `Showing ${total} jobs` : `Showing ${count} of ${total} jobs`;
+        }
+        
+        // STARRING FUNCTIONALITY
+        
+function showStarModal(jobId) {
+    const job = allJobs.find(j => j.id === jobId);
+    if (!job) {
+        console.error('Job not found for ID:', jobId);
+        return;
+    }
+    
+    currentJobForStar = job;  // This line is CRITICAL
+    
+    document.getElementById('starModalSubtitle').textContent = `${job.title} at ${job.company}`;
+    document.getElementById('starNotes').value = job.starred_notes || '';
+    document.getElementById('starModal').style.display = 'block';
+}
+        
+        function closeStarModal() {
+            document.getElementById('starModal').style.display = 'none';
+            currentJobForStar = null;
+            document.getElementById('starNotes').value = '';
+        }
+        
+        async function confirmStarJob() {
+    if (!currentJobForStar) {
+        console.error('No job selected for starring');
+        return;
+    }
+    
+    const notes = document.getElementById('starNotes').value.trim();
+    
+    console.log('Starring job:', currentJobForStar.id, 'with notes:', notes); // Debug line
+    
+    try {
+        const response = await fetch('/api/star_job', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                job_id: currentJobForStar.id,  // This was missing!
+                notes: notes || null
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Update job data locally
+            currentJobForStar.starred = true;
+            currentJobForStar.starred_at = new Date().toISOString();
+            currentJobForStar.starred_notes = notes;
+            
+            // Re-render jobs to show updated status
+            renderJobs();
+            closeStarModal();
+            
+            showNotification('✅ Job starred successfully!', 'success');
+        } else {
+            showNotification('❌ Failed to star job: ' + result.message, 'error');
+        }
+    } catch (error) {
+        console.error('Error starring job:', error);
+        showNotification('❌ Error starring job', 'error');
+    }
+}
+        
+        async function unstarJob(jobId) {
+            const job = allJobs.find(j => j.id === jobId);
+            if (!job) return;
+            
+            if (!confirm(`Remove star from "${job.title}" at ${job.company}?`)) {
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/unstar_job', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ job_id: jobId })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Update job data locally
+                    job.starred = false;
+                    job.starred_at = null;
+                    job.starred_notes = null;
+                    
+                    // Re-render jobs to show updated status
+                    renderJobs();
+                    
+                    showNotification('✅ Job unstarred successfully!', 'success');
+                } else {
+                    showNotification('❌ Failed to unstar job: ' + result.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error unstarring job:', error);
+                showNotification('❌ Error unstarring job', 'error');
+            }
+        }
+        
+        // EXPORT FUNCTIONALITY
+        
+        async function exportStarredJobs(format) {
+            try {
+                const response = await fetch(`/api/export_starred/${format}`);
+                
+                if (response.ok) {
+                    // Download the file
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = `starred_jobs.${format}`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                    
+                    showNotification(`✅ Starred jobs exported as ${format.toUpperCase()}!`, 'success');
+                } else {
+                    showNotification('❌ No starred jobs to export', 'error');
+                }
+            } catch (error) {
+                console.error('Error exporting starred jobs:', error);
+                showNotification('❌ Error exporting starred jobs', 'error');
+            }
+        }
+        
+        // STATS FUNCTIONALITY
+        
+        async function showStarredStats() {
+            try {
+                const response = await fetch('/api/starred_stats');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const stats = result.stats;
+                    
+                    let sourceStatsHtml = '';
+                    for (const [source, count] of Object.entries(stats.by_source)) {
+                        sourceStatsHtml += `<div class="stats-card-modal">
+                            <div class="stats-number-modal">${count}</div>
+                            <div class="stats-label-modal">${source}</div>
+                        </div>`;
+                    }
+                    
+                    document.getElementById('statsModalBody').innerHTML = `
+                        <div class="stats-grid-modal">
+                            <div class="stats-card-modal">
+                                <div class="stats-number-modal">${stats.total_starred}</div>
+                                <div class="stats-label-modal">Total Starred</div>
+                            </div>
+                            <div class="stats-card-modal">
+                                <div class="stats-number-modal">${stats.recent_week}</div>
+                                <div class="stats-label-modal">This Week</div>
+                            </div>
+                        </div>
+                        <h4>By Source:</h4>
+                        <div class="stats-grid-modal">
+                            ${sourceStatsHtml}
+                        </div>
+                    `;
+                    
+                    document.getElementById('statsModal').style.display = 'block';
+                } else {
+                    showNotification('❌ Error loading starred stats', 'error');
+                }
+            } catch (error) {
+                console.error('Error loading starred stats:', error);
+                showNotification('❌ Error loading starred stats', 'error');
+            }
+        }
+        
+        function closeStatsModal() {
+            document.getElementById('statsModal').style.display = 'none';
+        }
+        
+        // EXISTING FUNCTIONALITY (Resume Bullets)
+        
+        async function showInterest(jobId) {
+            const job = allJobs.find(j => j.id === jobId);
+            if (!job) return;
+            
+            currentJobForBullets = job;
+            
+            // Open modal
+            document.getElementById('modalTitle').textContent = 'Tailored Resume Bullets';
+            document.getElementById('modalSubtitle').textContent = `${job.title} at ${job.company}`;
+            document.getElementById('bulletModal').style.display = 'block';
+            
+            // Show loading
+            document.getElementById('modalBody').innerHTML = '<div class="loading-bullets">Generating tailored resume bullets...</div>';
+            
+            // Update apply button
+            const applyBtn = document.getElementById('applyBtn');
+            if (job.url) {
+                applyBtn.style.display = 'block';
+                applyBtn.onclick = () => window.open(job.url, '_blank');
+            } else {
+                applyBtn.style.display = 'none';
+            }
+            
+            try {
+                // Check if job already has bullets
+                if (job.has_bullets && job.bullets && job.bullets.length > 0) {
+                    displayBullets(job.bullets);
+                } else {
+                    // Generate bullets via API call
+                    const response = await fetch('/api/generate_bullets', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ job_id: parseInt(jobId, 10) })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        displayBullets(result.bullets);
+                        // Update job data
+                        job.bullets = result.bullets;
+                        job.has_bullets = true;
+                    } else {
+                        throw new Error(result.message || 'Failed to generate bullets');
+                    }
+                }
+            } catch (error) {
+                console.error('Error generating bullets:', error);
+                document.getElementById('modalBody').innerHTML = `
+                    <div class="error-message">
+                        <p>Sorry, there was an error generating custom bullets for this position.</p>
+                        <p>Here are some generic bullets you can customize:</p>
+                        <div class="bullet-item">Led implementation of scalable solutions reducing operational costs by 30%</div>
+                        <div class="bullet-item">Managed cross-functional team delivering project milestones ahead of schedule</div>
+                        <div class="bullet-item">Developed automated processes resulting in significant efficiency improvements</div>
+                    </div>
+                `;
+            }
+        }
+        
+        function displayBullets(bullets) {
+            const bulletsHtml = bullets.map(bullet => 
+                `<div class="bullet-item">${escapeHtml(bullet)}</div>`
+            ).join('');
+            
+            document.getElementById('modalBody').innerHTML = `
+                <div class="bullets-intro">
+                    <strong>📝 Tailored Resume Bullets</strong>
+                    <p>These bullets are customized for this specific role. Copy and paste them into your resume.</p>
+                </div>
+                ${bulletsHtml}
+                <div class="usage-tip">
+                    <strong>💡 Usage Tip:</strong> Customize these bullets with your specific metrics and achievements for maximum impact.
+                </div>
+            `;
+        }
+        
+        function closeBulletModal() {
+            document.getElementById('bulletModal').style.display = 'none';
+            currentJobForBullets = null;
+        }
+        
+        function copyBulletsToClipboard() {
+            const bullets = document.querySelectorAll('.bullet-item');
+            const bulletText = Array.from(bullets).map(bullet => bullet.textContent.replace('▶ ', '• ')).join('\n');
+            
+            navigator.clipboard.writeText(bulletText).then(() => {
+                // Show success feedback
+                const copyBtn = document.querySelector('.copy-btn');
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                // Fallback: select text
+                const range = document.createRange();
+                range.selectNodeContents(document.getElementById('modalBody'));
+                const sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+            });
+        }
+        
+        // UTILITY FUNCTIONS
+        
+        function showNotification(message, type = 'info') {
+            // Simple notification system
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 2000;
+                animation: slideIn 0.3s ease-out;
+                max-width: 300px;
+            `;
+            
+            if (type === 'success') {
+                notification.style.background = '#10b981';
+            } else if (type === 'error') {
+                notification.style.background = '#ef4444';
+            } else {
+                notification.style.background = '#3b82f6';
+            }
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        
+        function escapeHtml(unsafe) {
+            if (typeof unsafe !== 'string') return '';
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+        
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const bulletModal = document.getElementById('bulletModal');
+            const starModal = document.getElementById('starModal');
+            const statsModal = document.getElementById('statsModal');
+            
+            if (event.target == bulletModal) {
+                closeBulletModal();
+            } else if (event.target == starModal) {
+                closeStarModal();
+            } else if (event.target == statsModal) {
+                closeStatsModal();
+            }
+        }
+        
+        // Add CSS for notification animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // PAGINATION FUNCTIONALITY
+        
+        let currentPage = 1;
+        let totalPages = 1;
+        let pageSize = 20;
+        let isLoading = false;
+        
+        async function loadJobsPage(page = 1, updateHistory = true) {
+            if (isLoading) return;
+            
+            isLoading = true;
+            showPaginationLoading();
+            
+            try {
+                // Build query parameters
+                const params = new URLSearchParams({
+                    page_size: pageSize
+                });
+                
+                // Add filters
+                if (currentFilters.priority !== 'all') {
+                    params.append('priority', currentFilters.priority);
+                }
+                if (currentFilters.source !== 'all') {
+                    params.append('source', currentFilters.source);
+                }
+                if (currentFilters.remote !== 'all') {
+                    params.append('remote', currentFilters.remote);
+                }
+                if (currentFilters.search) {
+                    params.append('search', currentFilters.search);
+                }
+                
+                const response = await fetch(`/api/jobs/page/${page}?${params}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Update global state
+                    currentPage = result.pagination.current_page;
+                    totalPages = result.pagination.total_pages;
+                    
+                    // Update jobs display
+                    allJobs = result.jobs;
+                    filteredJobs = [...allJobs];
+                    renderJobs();
+                    
+                    // Update pagination controls
+                    updatePaginationControls(result.pagination);
+                    updateResultsCount(result.pagination);
+                    
+                    // Update URL if requested
+                    if (updateHistory && 'URLSearchParams' in window) {
+                        const url = new URL(window.location);
+                        url.searchParams.set('page', page);
+                        window.history.pushState({page: page}, '', url);
+                    }
+                    
+                } else {
+                    showNotification('❌ Failed to load jobs page', 'error');
+                }
+                
+            } catch (error) {
+                console.error('Error loading jobs page:', error);
+                showNotification('❌ Error loading jobs page', 'error');
+            } finally {
+                isLoading = false;
+                hidePaginationLoading();
+            }
+        }
+        
+        function updatePaginationControls(pagination) {
+            // Show pagination controls
+            document.getElementById('paginationControls').style.display = 'flex';
+            
+            // Update button states
+            document.getElementById('firstPageBtn').disabled = !pagination.has_previous;
+            document.getElementById('prevPageBtn').disabled = !pagination.has_previous;
+            document.getElementById('nextPageBtn').disabled = !pagination.has_next;
+            document.getElementById('lastPageBtn').disabled = !pagination.has_next;
+            
+            // Update page numbers
+            updatePageNumbers(pagination);
+        }
+        
+        function updatePageNumbers(pagination) {
+            const pageNumbersContainer = document.getElementById('pageNumbers');
+            pageNumbersContainer.innerHTML = '';
+            
+            const current = pagination.current_page;
+            const total = pagination.total_pages;
+            
+            // Always show first page
+            if (total > 1) {
+                addPageNumber(pageNumbersContainer, 1, current);
+            }
+            
+            // Add ellipsis if needed
+            if (current > 4) {
+                addEllipsis(pageNumbersContainer);
+            }
+            
+            // Add pages around current
+            const start = Math.max(2, current - 2);
+            const end = Math.min(total - 1, current + 2);
+            
+            for (let i = start; i <= end; i++) {
+                if (i !== 1 && i !== total) {
+                    addPageNumber(pageNumbersContainer, i, current);
+                }
+            }
+            
+            // Add ellipsis if needed
+            if (current < total - 3) {
+                addEllipsis(pageNumbersContainer);
+            }
+            
+            // Always show last page
+            if (total > 1) {
+                addPageNumber(pageNumbersContainer, total, current);
+            }
+        }
+        
+        function addPageNumber(container, pageNum, currentPage) {
+            const pageElement = document.createElement('div');
+            pageElement.className = pageNum === currentPage ? 'page-number current' : 'page-number';
+            pageElement.textContent = pageNum;
+            pageElement.onclick = () => goToPage(pageNum);
+            container.appendChild(pageElement);
+        }
+        
+        function addEllipsis(container) {
+            const ellipsis = document.createElement('div');
+            ellipsis.className = 'page-ellipsis';
+            ellipsis.textContent = '...';
+            container.appendChild(ellipsis);
+        }
+        
+        function goToPage(page) {
+            if (page === 'last') {
+                page = totalPages;
+            }
+            if (page >= 1 && page <= totalPages && page !== currentPage) {
+                loadJobsPage(page);
+            }
+        }
+        
+        function goToNextPage() {
+            if (currentPage < totalPages) {
+                loadJobsPage(currentPage + 1);
+            }
+        }
+        
+        function goToPreviousPage() {
+            if (currentPage > 1) {
+                loadJobsPage(currentPage - 1);
+            }
+        }
+        
+        function updatePageSize(newSize) {
+            pageSize = parseInt(newSize);
+            currentPage = 1; // Reset to first page
+            loadJobsPage(1);
+        }
+        
+        function showPaginationLoading() {
+            const container = document.getElementById('jobs-container');
+            container.innerHTML = '<div class="loading-pagination">Loading jobs...</div>';
+        }
+        
+        function hidePaginationLoading() {
+            // Loading will be hidden when renderJobs() is called
+        }
+        
+        function updateResultsCount(pagination) {
+            const resultsText = `Showing ${pagination.start_index + 1}-${pagination.end_index} of ${pagination.total_items} jobs (Page ${pagination.current_page} of ${pagination.total_pages})`;
+            document.getElementById('resultsCount').textContent = resultsText;
+        }
+        
+        // Override the original filter functions to work with pagination
+        function filterByPriority(priority) {
+            currentFilters.priority = priority;
+            currentPage = 1; // Reset to first page when filtering
+            loadJobsPage(1);
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+        
+        function filterBySource(source) {
+            currentFilters.source = source;
+            currentPage = 1;
+            loadJobsPage(1);
+        }
+        
+        function filterByRemote(remote) {
+            currentFilters.remote = remote;
+            currentPage = 1;
+            loadJobsPage(1);
+        }
+        
+        function searchJobs() {
+            currentFilters.search = document.getElementById('searchBox').value.toLowerCase();
+            currentPage = 1;
+            loadJobsPage(1);
+        }
+        
+        function clearAllFilters() {
+            currentFilters = {
+                priority: 'all',
+                source: 'all',
+                remote: 'all',
+                search: ''
+            };
+            
+            document.getElementById('sourceFilter').value = 'all';
+            document.getElementById('remoteFilter').value = 'all';
+            document.getElementById('searchBox').value = '';
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.filter-btn').classList.add('active');
+            
+            currentPage = 1;
+            loadJobsPage(1);
+        }
+        
+        // Override the original loadJobsData to use pagination
+        async function loadJobsData() {
+            try {
+                console.log('Loading jobs with pagination...');
+                
+                // Check if we have URL parameters for page
+                const urlParams = new URLSearchParams(window.location.search);
+                const urlPage = parseInt(urlParams.get('page')) || 1;
+                
+                // Load the first page
+                await loadJobsPage(urlPage, false);
+                
+                document.getElementById('loading').style.display = 'none';
+            } catch (error) {
+                console.error('Error loading jobs data:', error);
+                document.getElementById('loading').innerHTML = '❌ Error loading jobs data. Make sure you generated the dashboard first.';
+            }
+        }
+        
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', function(event) {
+            if (event.state && event.state.page) {
+                loadJobsPage(event.state.page, false);
+            }
+        });
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+Michael Blake 
+www.linkedin.com/in/michaelblake001  
+Relocating to Texas in OCT2025                                                              
+Phone: +49 0170 325 3465                        
+Email: michaeldblake01@gmail.com                                     
+Signal: +1 254 462 4063                                                   
+US Citizen 
+Top-Secret/SCI Security Clearance | CI Polygraph 
+Azure & Hybrid-Cloud Security Engineer 
+Mission-driven IT leader and transitioning U.S. Army Senior NCO with 20+ years securing and modernizing 
+global command-and-control networks. Trusted for TS/SCI operations, now translating that expertise to Azure 
+& hybrid-cloud administration—designing, hardening, and automating Windows Server and virtual 
+infrastructures with PowerShell, ARM/Bicep, and Azure AD. Proven record of slashing risk, accelerating 
+deployments, and mentoring diverse teams of up to 32 while delivering high-availability services in the most 
+demanding environments. 
+Professional Experience 
+Participant – Microsoft Software and Systems Academy | April 2025 – August 2025 
+MSSA Microsoft  
+• Completed 680 classroom and lab hours in Server & Cloud Administration, mastering Azure IaaS/PaaS, 
+Windows Server core services, PowerShell automation, and hybrid-infrastructure design principles. 
+• Installed, configured, and hardened Windows Server AD DS, DNS, DHCP, and file services on-prem and 
+in Azure, validating security and performance baselines through scripted test plans. 
+• Built, tuned, and monitored Hyper-V and Azure VMs hosting IIS, SQL, and container workloads, shrinking 
+provisioning time from hours to minutes with ARM and Bicep templates. 
+• Automated user, group, and resource provisioning with advanced PowerShell DSC, cutting repetitive 
+admin effort 75% while enforcing RBAC and Network Security Group policy. 
+• Implemented enterprise-grade Azure AD, VNets, NSGs, route tables, and custom RBAC roles, creating 
+a reusable blueprint for secure, scalable hybrid-cloud deployments. 
+• Conducted threat-modeling and role-based-access reviews, applying Microsoft Defender guidance to 
+harden on-prem and cloud assets against lateral movement and privilege escalation. 
+CEMA NCOIC / Planner | U.S. Army | 2020 – Present 
+2nd Multi-Domain Task Force — CEMA Planner (EW)  
+• Synchronized cyber-EW effects for four multi-nation INDOPACOM exercises, converting commander 
+intent into 60+ taskable targets and raising scenario success rates by 30%. 
+• Mentored and evaluated a 32-soldier CEMA section; a bespoke career-progression track produced eight 
+promotions, zero attrition, and one brigade-level NCO-of-the-Year award. 
+• Integrated Army Cyber Situational Understanding feeds into the task-force Common Operational Picture 
+(COP), shaving 25% off sensor-to-shooter cycles during live-fire validation. 
+1st Multi-Domain Task Force / I2CEWS — Founding CEMA Planner (EW) 
+• Stood up the Army’s inaugural I2CEWS unit, fusing cyber, EW, intel, information, and space equities; 
+tailored processes lifted joint situational awareness 40% within six months. 
+• Pioneered high-altitude balloon Intelligence, Surveillance, and Reconnaissance (ISR) integration, 
+extending collection 100+ miles and generating actionable data for four Combatant-Command exercises. 
+• Managed 350+ space-effect requests across five joint events, sustaining a 95% fulfillment rate and 
+eliminating duplicate tasking conflicts. 
+• Safeguarded $10M in EW/cyber equipment with zero loss while standardizing maintenance workflows 
+across three geographically dispersed detachments. 
+Electronic Warfare Sergeant | U.S. Army | 2011 – 2020 
+Various Units (1/25 INF, 3 Cavalry Regt, 172d SBCT)  
+• Planned and executed 50+ combat EW missions over two Afghanistan deployments, disrupting insurgent 
+comms and protecting 27,000 coalition personnel with zero mission losses. 
+• Trained Air Force Security Forces on 13 electromagnetic countermeasure systems, establishing 24/7 
+perimeter coverage and elevating base security posture by 40%.  
+• Degraded enemy C2 nodes 45% via spectrum analysis, targeted deconfliction, and in-theater 
+vulnerability exploitation, directly enabling decisive maneuver.  
+• Managed and inventoried $10M in EW assets without loss while driving soldier weapons-qualification 
+rates from 75% to 97% in a single training cycle.  
+Technical Skills 
+• Cloud & DevOps:  Azure (IaaS/PaaS), ARM/Bicep, Terraform, Azure DevOps, Git 
+• Infrastructure:  Windows Server, Active Directory, Hyper-V, IIS, SQL Server, Containers 
+• Security Tooling:  Defender for Cloud, Sentinel SIEM, Nessus, Metasploit, Wireshark 
+• Identity & Access:  Azure AD, RBAC, PIM, Conditional Access, MFA, AAD Connect 
+• Networking:  TCP/IP, VLANs/Subnets, NSGs/Firewalls, TLS/SSL, IPsec, VPN/ExpressRoute 
+• Automation & Monitoring:  PowerShell DSC, Azure Monitor, Log Analytics 
+• Compliance & Governance:  NIST 800-53/171, DoD RMF (end-to-end), ISO 27001 
+Education 
+• M.B.A., Liberty University — 2024, GPA 3.7                                                                   
+• B.A., International Business, Ashworth College — 2013 
+Certifications 
+PMP • CompTIA Security+ • CompTIA Network+ • Google Cloud Digital Leader • MSSA (Server 
+& Cloud) • Lean Six Sigma Green Belt • Joint Network Attack Course (JNAC) 
+Additional Information 
+• Clearance  Active TS/SCI with CI Polygraph (Continuous Vetting) 
+• Professional Affiliations  Association of Old Crows (member since 2011) 
+• Mobility  Willing to travel & relocate; available Oct 2025 

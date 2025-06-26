@@ -1,0 +1,55 @@
+active_profile: default
+analysis:
+  batch_size: 5
+  cache_llm_calls: true
+  lazy_analysis: true
+  llm_model: gpt-3.5-turbo
+  llm_temperature: 0.1
+  score_threshold: 75
+jobs:
+  exclude_keywords:
+  - intern
+  - unpaid
+  - volunteer
+  - entry level
+  job_types:
+  - Full-time
+  - Contract
+  max_age_days: 30
+  min_salary: 90000
+  target_companies: []
+  target_titles:
+  - Software Engineer
+  - Data Scientist
+  - Product Manager
+  - Cloud Engineer
+  - DevOps Engineer
+  - Full Stack Developer
+location:
+  country: United States
+  primary_locations:
+  - Austin, TX
+  target_locations:
+  - Texas
+log_level: INFO
+output_dir: ./output
+profiles:
+  default:
+    resume_path: /home/micha/Claude/Test - Claude/resume/base_resume.txt
+scraping:
+  base_delay: 1.0
+  enabled_sources: []
+  max_delay: 5.0
+  max_retries: 3
+  pages_per_source: 1
+  respect_robots_txt: false
+  timeout: 15
+user:
+  clearance_level: null
+  email: your.email@example.com
+  experience_level: Senior
+  name: Your Name Here
+  preferred_work_type: On-site, Hybrid, Remote
+  resume_path: resume/base_resume.txt
+  target_industry: Technology
+version: 1.0.0
