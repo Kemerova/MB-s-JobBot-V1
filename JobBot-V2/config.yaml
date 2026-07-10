@@ -1,0 +1,32 @@
+search:
+  terms:
+  - Network Technician
+  - Network Engineer
+  - Network
+  - Azure
+  location: Joint Base Lewis-McChord
+  sites:
+  - indeed
+  - linkedin
+  - glassdoor
+  - google
+  - zip_recruiter
+  results_per_term: 25
+  hours_old: 168
+  country_indeed: USA
+  radius_miles: 50
+filters:
+  min_salary: 90000
+  exclude_title_keywords:
+  - intern
+  - internship
+  - unpaid
+  - volunteer
+analysis:
+  enabled: false
+  score_model: claude-haiku-4-5
+  bullets_model: claude-opus-4-8
+  score_threshold: 70
+  max_description_chars: 6000
+resume_path: resume/base_resume.txt
+output_dir: output
